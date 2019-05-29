@@ -6,19 +6,20 @@ export interface FoodItemInputProps {
   index: number;
   value: FoodItemInputValue;
   onChange: (index: number, value: Partial<FoodItemInputValue>) => void;
+  onRemove: (index: number) => void;
 }
 
-const initialState = {
+const initialState = () => ({
   touched: {
     name: false,
     calories: false,
     portion: false,
   }
-}
-type State = Readonly<typeof initialState>;
+})
+type State = Readonly<ReturnType<typeof initialState>>;
 
-export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onChange }) => {
-  const [{ touched }, setState] = useState<State>(initialState);
+export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onChange, onRemove }) => {
+  const [{ touched }, setState] = useState<State>(initialState());
 
   const handleBlur = (key: keyof FoodItemInputValue) => () => {
     if (!touched[key]) {
@@ -31,11 +32,16 @@ export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onCh
     onChange(index, { [key]: (key === 'calories' || key === 'portion') && value ? Math.abs(+value) : value });
   }
 
+  const handleRemove = () => {
+    setState(initialState());
+    onRemove(index);
+  }
+
   return (
     <div className="FoodItemInput">
       <div className="FoodItemInput__heading">
         <h4>Food Item {index + 1}</h4>
-        <button>Delete</button>
+        <button onClick={handleRemove}>Remove</button>
       </div>
       <div>
         <label>
@@ -48,7 +54,7 @@ export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onCh
               type="text"
               placeholder="Enter name"
             />
-            {touched.name && !value.name && <div className="FoodItemInput__error">Name is required</div>}
+            {touched.name && !value.name && <div className="FoodItemInput__error">Please enter a name</div>}
           </div>
         </label>
       </div>
@@ -64,7 +70,7 @@ export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onCh
               min="0"
             />
             calories
-            {touched.calories && !value.calories && <div className="FoodItemInput__error">Calories is required</div>}
+            {touched.calories && typeof value.calories !== 'number' && <div className="FoodItemInput__error">Please enter a number</div>}
           </div>
         </label>
       </div>
@@ -80,7 +86,7 @@ export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onCh
               min="0"
             />
             grams
-            {touched.portion && !value.portion && <div className="FoodItemInput__error">Portion is required</div>}
+            {touched.portion && typeof value.portion !== 'number' && <div className="FoodItemInput__error">Please enter a number</div>}
           </div>
         </label>
       </div>

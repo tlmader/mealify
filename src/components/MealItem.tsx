@@ -7,8 +7,8 @@ interface Props {
   meal: Meal;
 }
 
-export const renderFoodItem = (foodItem: FoodItem) => 
-<ul className="MealItem__food-item">
+export const renderFoodItem = (foodItem: FoodItem, index: number) => 
+<ul className="MealItem__food-item" key={index}>
   <li>Name - {foodItem.name}</li>
   <li>Calories - {foodItem.calories} calories</li>
   <li>Portion - {foodItem.portion} grams</li>

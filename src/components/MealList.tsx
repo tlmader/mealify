@@ -3,7 +3,7 @@ import { Meal } from '../interfaces/Meal';
 import { MealContext } from '../contexts/MealContext';
 import { MealItem } from './MealItem';
 
-const renderMealItem = (meal: Meal) => <MealItem meal={meal} />
+const renderMealItem = (meal: Meal, index: number) => <MealItem meal={meal} key={index} />
 
 export const MealList: React.FC = () => {
   const { meals } = useContext(MealContext);

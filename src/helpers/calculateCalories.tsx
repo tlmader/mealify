@@ -13,4 +13,4 @@ export const calculateTotalCalories = (foodPortions: FoodPortion[], getFoodItem:
   );
 
 export const calculateCalories = ({ calories, portion }: FoodItem, portions: number) =>
-  (portion * portions / 100) * calories;
+  Math.floor((portion * portions / 100) * calories);

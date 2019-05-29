@@ -98,7 +98,7 @@ export const CreateMealForm: React.FC<Props> = ({ onValidSubmit }) => {
   return (
     <div className="CreateMealForm">
       <AddFoodItemList onAdd={handleAddFoodItem} />
-      <form onSubmit={handleSubmit}>
+      <form className="CreateMealForm__form" onSubmit={handleSubmit}>
         {foodPortions.map((foodPortion, index) => {
           const foodItem = getFoodItem(foodPortion.id);
           return foodItem && (

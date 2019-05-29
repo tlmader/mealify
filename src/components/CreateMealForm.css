@@ -4,6 +4,10 @@
   grid-gap: 4rem;
 }
 
+.CreateMealForm__form {
+  min-width: 20rem;
+}
+
 .CreateMealForm__no-food-items {
   margin: 1rem 0;
   font-size: 12px;

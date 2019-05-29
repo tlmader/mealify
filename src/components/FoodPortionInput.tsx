@@ -34,10 +34,12 @@ export const FoodPortionInput: React.FC<FoodPortionInputProps> = ({ index, foodI
     setState({ touched: true });
   }
 
+  const limitValue = (value: number) => Math.min(Math.abs(value), 1000)
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = event.target;
     console.log(value);
-    onChange(index, { id: foodItem.id, portions: value ? Math.abs(+value) : '' });
+    onChange(index, { id: foodItem.id, portions: value ? limitValue(+value) : '' });
   }
 
   const handleRemove = () => {
@@ -61,7 +63,9 @@ export const FoodPortionInput: React.FC<FoodPortionInputProps> = ({ index, foodI
               onChange={handleChange}
               placeholder="Enter a number"
               type="number"
+              max="1000"
               min="0"
+              step="0.1"
             />
             {calculateCalories(foodItem, Number(value.portions))} calories
             {renderError(submitted, touched, value)}

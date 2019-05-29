@@ -11,7 +11,7 @@
 .FoodPortionInput__input {
   margin: 0.3333rem 0 2rem 0;
   display: grid;
-  grid-template-columns: 10rem auto;
+  grid-template-columns: 7rem auto;
   grid-gap: 0.5rem;
 }
 

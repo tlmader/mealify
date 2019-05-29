@@ -11,7 +11,7 @@ export const AddFoodItemList: React.FC<Props> = ({ onAdd }) => {
   const { foodItems } = useContext(FoodItemContext);
   return (
     <div>
-      <h2>Food Items</h2>
+      <h3>Food Items</h3>
       {foodItems.map(foodItem => (
         <div className="AddFoodItemList__food-item" key={foodItem.id}>
           <div className="AddFoodItemList__heading">

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { calculateCalories } from '../helpers/calculateCalories';
 import { FoodItem } from '../interfaces/FoodItem';
-import { FoodPortion } from '../interfaces/Meal';
 import './FoodPortionInput.css';
 
+// Use separate interface for input values to handle empty strings produced by invalid input
 export interface FoodPortionInputValue {
   portions: number | string;
   id: string;
@@ -13,7 +13,7 @@ export interface FoodPortionInputProps {
   index: number;
   submitted: boolean;
   foodItem: FoodItem;
-  value: FoodPortion;
+  value: FoodPortionInputValue;
   onChange: (index: number, value: Partial<FoodPortionInputValue>) => void;
   onRemove: (index: number) => void;
 }
@@ -63,7 +63,7 @@ export const FoodPortionInput: React.FC<FoodPortionInputProps> = ({ index, foodI
               type="number"
               min="0"
             />
-            {calculateCalories(foodItem, value.portions)} calories
+            {calculateCalories(foodItem, Number(value.portions))} calories
             {renderError(submitted, touched, value)}
           </div>
         </label>

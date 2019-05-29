@@ -6,6 +6,7 @@ import { FoodPortionInput, FoodPortionInputProps, FoodPortionInputValue } from '
 import { calculateTotalCalories } from '../helpers/calculateCalories';
 import { AddFoodItemList } from './AddFoodItemList';
 import './CreateMealForm.css';
+import { adjustFoodPortionValue } from '../helpers/adjustFoodPortionValue';
 interface Props {
   onValidSubmit: (meal: Meal) => void;
 }
@@ -42,7 +43,7 @@ const updateFoodPortion = (index: number, value: Partial<FoodPortionInputValue>)
   ...state,
   foodPortions: [
     ...state.foodPortions.slice(0, index),
-    { ...state.foodPortions[index], ...value },
+    { ...state.foodPortions[index], ...value, portions: adjustFoodPortionValue(value.portions) },
     ...state.foodPortions.slice(index + 1),
   ],
 });

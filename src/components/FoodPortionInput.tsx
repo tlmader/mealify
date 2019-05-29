@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { calculateCalories } from '../helpers/calculateCalories';
 import { FoodItem } from '../interfaces/FoodItem';
 import './FoodPortionInput.css';
+import { adjustFoodPortionValue } from '../helpers/adjustFoodPortionValue';
 
 // Use separate interface for input values to handle empty strings produced by invalid input
 export interface FoodPortionInputValue {
@@ -34,12 +35,10 @@ export const FoodPortionInput: React.FC<FoodPortionInputProps> = ({ index, foodI
     setState({ touched: true });
   }
 
-  const limitValue = (value: number) => Math.min(Math.abs(value), 1000)
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = event.target;
     console.log(value);
-    onChange(index, { id: foodItem.id, portions: value ? limitValue(+value) : '' });
+    onChange(index, { id: foodItem.id, portions: adjustFoodPortionValue(value) });
   }
 
   const handleRemove = () => {

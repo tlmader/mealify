@@ -1,21 +1,21 @@
-.FoodItemInput {
+.FoodPortionInput {
   margin: 2rem 0;
 }
 
-.FoodItemInput__heading {
+.FoodPortionInput__heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.FoodItemInput__input {
+.FoodPortionInput__input {
   margin: 0.3333rem 0 2rem 0;
   display: grid;
   grid-template-columns: 10rem auto;
   grid-gap: 0.5rem;
 }
 
-.FoodItemInput__error {
+.FoodPortionInput__error {
   margin: 1.5rem 0;
   position: absolute;
   color: red;

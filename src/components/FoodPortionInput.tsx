@@ -4,12 +4,17 @@ import { FoodItem } from '../interfaces/FoodItem';
 import { FoodPortion } from '../interfaces/Meal';
 import './FoodPortionInput.css';
 
+export interface FoodPortionInputValue {
+  portions: number | string;
+  id: string;
+}
+
 export interface FoodPortionInputProps {
   index: number;
   submitted: boolean;
   foodItem: FoodItem;
   value: FoodPortion;
-  onChange: (index: number, value: Partial<FoodPortion>) => void;
+  onChange: (index: number, value: Partial<FoodPortionInputValue>) => void;
   onRemove: (index: number) => void;
 }
 
@@ -17,6 +22,10 @@ const initialState = () => ({
   touched: false
 })
 type State = Readonly<ReturnType<typeof initialState>>;
+
+const renderError = (submitted: boolean, touched: boolean, { portions }: FoodPortionInputValue) =>
+  ((submitted || touched) && (typeof portions !== 'number' || portions <= 0))
+  && <div className="FoodPortionInput__error">Please enter a valid number greater than 0</div>
 
 export const FoodPortionInput: React.FC<FoodPortionInputProps> = ({ index, foodItem, submitted, value, onChange, onRemove }) => {
   const [{ touched }, setState] = useState<State>(initialState());
@@ -26,10 +35,9 @@ export const FoodPortionInput: React.FC<FoodPortionInputProps> = ({ index, foodI
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = +event.target.value;
-    if (typeof value === 'number') {
-      onChange(index, { id: foodItem.id, portions: Math.abs(value) });
-    }
+    const {value} = event.target;
+    console.log(value);
+    onChange(index, { id: foodItem.id, portions: value ? Math.abs(+value) : '' });
   }
 
   const handleRemove = () => {
@@ -51,11 +59,12 @@ export const FoodPortionInput: React.FC<FoodPortionInputProps> = ({ index, foodI
               value={value.portions}
               onBlur={handleBlur}
               onChange={handleChange}
+              placeholder="Enter a number"
               type="number"
               min="0"
             />
             {calculateCalories(foodItem, value.portions)} calories
-            {(submitted || touched) && typeof value.portions !== 'number' && <div className="FoodPortionInput__error">Please enter a number</div>}
+            {renderError(submitted, touched, value)}
           </div>
         </label>
       </div>

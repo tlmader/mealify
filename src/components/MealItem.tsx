@@ -4,6 +4,7 @@ import { Meal } from '../interfaces/Meal';
 import './MealItem.css';
 
 interface Props {
+  index: number;
   meal: Meal;
 }
 
@@ -14,10 +15,10 @@ export const renderFoodItem = (foodItem: FoodItem, index: number) =>
   <li>Portion - {foodItem.portion} grams</li>
 </ul>
 
-export const MealItem: React.FC<Props> = ({ meal }) => {
+export const MealItem: React.FC<Props> = ({ index, meal }) => {
   return (
     <div className="MealItem">
-      <h4>Meal</h4>
+      <h4>Meal {index + 1}</h4>
       {meal.foodItems.map(renderFoodItem)}
     </div>
   );

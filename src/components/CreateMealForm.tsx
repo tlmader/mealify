@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { FoodItemInputValue } from '../types/FoodItemInputValue';
+import { FoodItem } from '../types/FoodItem';
 import { FoodItemInput, FoodItemInputProps } from './FoodItemInput';
-import { FoodItem } from '../interfaces/FoodItem';
+
+interface Props {
+  onValidSubmit: (foodItems: FoodItem[]) => void;
+}
 
 interface State {
-  foodItems: FoodItemInputValue[];
+  foodItems: FoodItem[];
   submitted: boolean;
 }
 
@@ -28,7 +31,7 @@ const addFoodItem = (state: State): State => ({
   foodItems: state.foodItems.concat(defaultFoodItem()),
 });
 
-const updateFoodItem = (index: number, value: Partial<FoodItemInputValue>) => (state: State): State => ({
+const updateFoodItem = (index: number, value: Partial<FoodItem>) => (state: State): State => ({
   ...state,
   foodItems: [
     ...state.foodItems.slice(0, index),
@@ -45,7 +48,7 @@ const removeFoodItem = (index: number) => (state: State): State => ({
 });
 
 const renderFoodItemInput = (handleChange: OnChangeFn, handleRemove: OnRemoveFn, submitted: boolean) =>
-  (value: FoodItemInputValue, index: number) =>
+  (value: FoodItem, index: number) =>
     <FoodItemInput
       index={index}
       submitted={submitted}
@@ -55,12 +58,12 @@ const renderFoodItemInput = (handleChange: OnChangeFn, handleRemove: OnRemoveFn,
       key={index}
     />
 
-const foodItemIsValid = (foodItem: FoodItemInputValue): boolean =>
+const foodItemIsValid = (foodItem: FoodItem): boolean =>
   Boolean(foodItem.name && foodItem.calories >= 0 && foodItem.portion >= 0);
 
-export const MealForm: React.FC = () => {
+export const CreateMealForm: React.FC<Props> = ({ onValidSubmit }) => {
   const [{ foodItems, submitted }, setState] = useState(initialState);
-  
+
   const handleChange: OnChangeFn = (index, value) => {
     setState(updateFoodItem(index, value))
   }
@@ -78,9 +81,9 @@ export const MealForm: React.FC = () => {
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log('submit', foodItems);
     if (foodItems.every(foodItemIsValid)) {
-      handleReset();
+      onValidSubmit(foodItems);
+      setState(initialState);
     } else {
       setState(prevState => ({ ...prevState, submitted: true }));
     }
@@ -90,8 +93,7 @@ export const MealForm: React.FC = () => {
   console.log(foodItems);
   return (
     <form className="CreateMealForm" onSubmit={handleSubmit}>
-      <h2>Create a Meal</h2>
-        {foodItems.map(renderFoodItemInput(handleChange, handleRemove, submitted))}
+      {foodItems.map(renderFoodItemInput(handleChange, handleRemove, submitted))}
       <button type="button" onClick={handleReset}>Reset</button>
       <button type="button" onClick={handleAddFoodItem}>Add Food Item</button>
       <button>Create Meal</button>

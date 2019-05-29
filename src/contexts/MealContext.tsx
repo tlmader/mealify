@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Meal } from '../interfaces/Meal';
 
-export const defaultMeals: { meals: Meal[] } = {
+export const withDefaultMeals = (value: any) => ({
+  ...value,
   meals: [
     {
       foodItems: [
@@ -36,6 +37,29 @@ export const defaultMeals: { meals: Meal[] } = {
       ]
     },
   ]
-};
+});
 
-export const MealContext = React.createContext(defaultMeals)
+export const MealContext = React.createContext(withDefaultMeals({}));
+
+interface State {
+  meals: Meal[];
+}
+
+export const MealProvider: React.FC = ({ children }) => {
+  const [state, setState] = useState<State>({ meals: [] })
+
+  const addMeal = (addedMeal: Meal) => {
+    setState(({ meals }) => ({ meals: [...meals, addedMeal] }));
+  }
+
+  return (
+    <MealContext.Provider
+      value={{
+        ...state,
+        addMeal
+      }}
+    >
+      {children}
+    </MealContext.Provider>
+  );
+};

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { FoodItemInputValue } from '../types/FoodItemInputValue';
-import './FoodItemInput.css';
+import { FoodItem } from '../interfaces/FoodItem';
+
+type FoodItemInputValue = Pick<FoodItem, 'name' | 'calories' | 'portion'>
 
 export interface FoodItemInputProps {
   index: number;
@@ -42,7 +43,7 @@ export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, submitted, 
     <div className="FoodItemInput">
       <div className="FoodItemInput__heading">
         <h4>Food Item {index + 1}</h4>
-        <button onClick={handleRemove}>Remove</button>
+        <button type="button" onClick={handleRemove}>Remove</button>
       </div>
       <div>
         <label>

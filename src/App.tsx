@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './App.css';
-import { defaultMeals, MealContext } from './contexts/MealContext';
 import { MealList } from './components/MealList';
-import { MealForm } from './components/CreateMealForm';
+import { MealProvider } from './contexts/MealContext';
+import { CreateMealView } from './components/CreateMealView';
 
 const App: React.FC = () => {
   return (
-    <MealContext.Provider value={defaultMeals}>
+    <MealProvider>
       <div className="App">
         <div>
           <h1>YumLog</h1>
@@ -15,10 +15,10 @@ const App: React.FC = () => {
         <div className="App__divider" />
         <div className="App__content">
           <MealList />
-          <MealForm />
+          <CreateMealView />
         </div>
       </div>
-    </MealContext.Provider>
+    </MealProvider>
   );
 }
 

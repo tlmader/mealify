@@ -7,47 +7,30 @@ interface State {
 
 export const defaultMeals = (): Meal[] => [
   {
-    id: '1',
-    foodItems: [
+    foodPortions: [
       {
         id: '1',
-        name: 'Spaghetti',
-        calories: 500,
-        portion: 20
+        portions: 2
       },
       {
         id: '2',
-        name: 'Lemonade',
-        calories: 200,
-        portion: 10
-      }
+        portions: 1
+      },
     ]
   },
   {
-    id: '2',
-    foodItems: [
+    foodPortions: [
       {
         id: '3',
-        name: 'Sushi',
-        calories: 250,
-        portion: 10
+        portions: 4
       },
       {
         id: '4',
-        name: 'Green Tea',
-        calories: 5,
-        portion: 5
+        portions: 1
       }
     ]
   },
 ];
-
-// Server would do this in real world scenario
-const createId = (currentId: number) => {
-  return () => (currentId++).toString();
-}
-const foodId = createId(5);
-const mealId = createId(3);
 
 export const MealContext = React.createContext({
   addMeal: (addedMeal: Meal) => {
@@ -55,17 +38,11 @@ export const MealContext = React.createContext({
   },
   meals: defaultMeals()
 });
-
-const withIds = (meal: Meal): Meal => ({
-  id: mealId(),
-  foodItems: meal.foodItems.map(foodItem => ({ ...foodItem, id: foodId() }))
-})
-
 export const MealProvider: React.FC = ({ children }) => {
   const [state, setState] = useState<State>({ meals: defaultMeals() })
 
   const addMeal = (addedMeal: Meal) => {
-    setState(({ meals }) => ({ meals: [...meals, withIds(addedMeal)] }));
+    setState(({ meals }) => ({ meals: [...meals, addedMeal] }));
   }
 
   console.log('MealContext', state);

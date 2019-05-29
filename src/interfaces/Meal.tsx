@@ -1,6 +1,8 @@
 import { FoodItem } from './FoodItem';
 
 export interface Meal {
-  id?: string;
-  foodItems: FoodItem[];
+  foodPortions: {
+    id: FoodItem['id'];
+    portions: number;
+  }[]
 }

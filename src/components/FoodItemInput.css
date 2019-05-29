@@ -1,0 +1,14 @@
+.FoodItemInput {
+  margin: 2rem 0;
+}
+
+.FoodItemInput__input {
+  margin: 0.25rem 0;
+  display: grid;
+  grid-template-columns: 10rem auto;
+  grid-gap: 0.25rem;
+}
+
+label {
+  margin: 1rem 0;
+}

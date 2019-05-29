@@ -8,15 +8,20 @@ interface State {
 
 type OnChangeFn = FoodItemInputProps['onChange'];
 
+const defaultFoodItem = () => (
+  {
+    name: '',
+    calories: 0,
+    portion: 0,
+  });
+
 const initialState: Readonly<State> = {
-  foodItems: [
-    {
-      name: '',
-      calories: 0,
-      portion: 0,
-    }
-  ]
+  foodItems: [defaultFoodItem()]
 }
+
+const addFoodItem = ({ foodItems }: State): State => ({
+  foodItems: foodItems.concat(defaultFoodItem()),
+});
 
 const updateFoodItem = (index: number, value: Partial<FoodItemInputValue>) => ({ foodItems }: State): State => ({
   foodItems: [
@@ -26,19 +31,24 @@ const updateFoodItem = (index: number, value: Partial<FoodItemInputValue>) => ({
   ],
 });
 
-const renderFoodItemInput = (onChange: OnChangeFn) =>
-  (value: FoodItemInputValue, index: number) => <FoodItemInput value={value} onChange={onChange} key={index} />
+const renderFoodItemInput = (handleChange: OnChangeFn) =>
+  (value: FoodItemInputValue, index: number) =>
+    <FoodItemInput index={index} value={value} onChange={handleChange} key={index} />
 
 export const MealForm: React.FC = () => {
   const [{ foodItems }, setfoodItems] = useState(initialState);
-  const onChange: OnChangeFn = (index, value) => {
+  const handleChange: OnChangeFn = (index, value) => {
     setfoodItems(updateFoodItem(index, value))
-    console.log(foodItems); 
   }
+  const handleClick = () => {
+    setfoodItems(addFoodItem); 
+  }
+  console.log(foodItems); 
   return (
     <div className="CreateMealForm">
       <h2>Create a Meal</h2>
-        {foodItems.map(renderFoodItemInput(onChange))}
+        {foodItems.map(renderFoodItemInput(handleChange))}
+      <button onClick={handleClick}>Add Food Item</button>
       <button>Create Meal</button>
     </div>
   );

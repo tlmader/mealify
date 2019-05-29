@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FoodItem } from '../types/FoodItem';
+import { FoodItem } from '../interfaces/FoodItem';
 import { FoodItemInput, FoodItemInputProps } from './FoodItemInput';
 
 interface Props {
@@ -89,8 +89,7 @@ export const CreateMealForm: React.FC<Props> = ({ onValidSubmit }) => {
     }
     event.preventDefault();
   }
-
-  console.log(foodItems);
+  
   return (
     <form className="CreateMealForm" onSubmit={handleSubmit}>
       {foodItems.map(renderFoodItemInput(handleChange, handleRemove, submitted))}

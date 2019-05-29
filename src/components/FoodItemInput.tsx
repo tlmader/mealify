@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FoodItem } from '../interfaces/FoodItem';
+import './FoodItemInput.css';
 
 type FoodItemInputValue = Pick<FoodItem, 'name' | 'calories' | 'portion'>
 

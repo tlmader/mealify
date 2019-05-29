@@ -39,7 +39,18 @@ export const withDefaultMeals = (value: any) => ({
   ]
 });
 
+// Server would do this in real world scenario
+const createUuid = () => {
+  let nextId = 0;
+  return () => (nextId++).toString();
+}
+const uuid = createUuid();
+
 export const MealContext = React.createContext(withDefaultMeals({}));
+
+const withFoodItemIds = (meal: Meal): Meal => ({
+  foodItems: meal.foodItems.map(foodItem => ({ ...foodItem, id: uuid() }))
+})
 
 interface State {
   meals: Meal[];
@@ -49,8 +60,10 @@ export const MealProvider: React.FC = ({ children }) => {
   const [state, setState] = useState<State>({ meals: [] })
 
   const addMeal = (addedMeal: Meal) => {
-    setState(({ meals }) => ({ meals: [...meals, addedMeal] }));
+    setState(({ meals }) => ({ meals: [...meals, withFoodItemIds(addedMeal)] }));
   }
+
+  console.log('MealContext', state);
 
   return (
     <MealContext.Provider

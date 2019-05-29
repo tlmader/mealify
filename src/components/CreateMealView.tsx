@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { MealContext } from '../contexts/MealContext';
-import { CreateMealForm } from './CreateMealForm';
 import { FoodItem } from '../interfaces/FoodItem';
+import { CreateMealForm } from './CreateMealForm';
 
 const initialState = {
   showForm: false
@@ -9,7 +9,7 @@ const initialState = {
 type State = Readonly<typeof initialState>;
 
 export const CreateMealView: React.FC = () => {
-  const { meals, addMeal } = useContext(MealContext);
+  const { addMeal } = useContext(MealContext);
   const [{ showForm }, setState] = useState<State>(initialState);
 
   const handleClick = () => {
@@ -18,6 +18,7 @@ export const CreateMealView: React.FC = () => {
 
   const handleValidSubmit = (foodItems: FoodItem[]) => {
     addMeal({ foodItems });
+    setState(initialState);
   }
 
   return (

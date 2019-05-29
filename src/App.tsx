@@ -1,24 +1,15 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useContext } from 'react';
 import './App.css';
+import { defaultMeals, MealContext } from './contexts/MealContext';
+import { MealList } from './components/MealList';
 
 const App: React.FC = () => {
+  const { meals } = useContext(MealContext)
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MealContext.Provider value={defaultMeals}>
+        <MealList />
+      </MealContext.Provider>
     </div>
   );
 }

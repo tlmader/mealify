@@ -1,6 +1,14 @@
 .App {
   display: grid;
+  justify-content: center;
+}
+
+.App__divider {
+  border-bottom: 1px solid lightgray
+}
+
+.App__content {
+  display: grid;
   grid-template-columns: auto auto;
   grid-gap: 2rem;
-  justify-content: center;
 }

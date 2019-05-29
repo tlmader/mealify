@@ -1,79 +1,63 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { FoodItemContext } from '../contexts/FoodItemContext';
 import { FoodItem } from '../interfaces/FoodItem';
-import { FoodItemInput, FoodItemInputProps } from './FoodItemInput';
+import { FoodPortion, Meal } from '../interfaces/Meal';
+import { FoodPortionInput, FoodPortionInputProps } from './FoodPortionInput';
+import { calculateTotalCalories } from '../helpers/calculateCalories';
 
 interface Props {
-  onValidSubmit: (foodItems: FoodItem[]) => void;
+  onValidSubmit: (meal: Meal) => void;
 }
 
 interface State {
-  foodItems: FoodItem[];
+  foodPortions: FoodPortion[];
   submitted: boolean;
 }
 
-type OnChangeFn = FoodItemInputProps['onChange'];
-type OnRemoveFn = FoodItemInputProps['onRemove'];
-
-const defaultFoodItem = () => (
-  {
-    name: '',
-    calories: 0,
-    portion: 0,
-  });
+type OnChangeFn = FoodPortionInputProps['onChange'];
+type OnRemoveFn = FoodPortionInputProps['onRemove'];
 
 const initialState: Readonly<State> = {
-  foodItems: [defaultFoodItem()],
+  foodPortions: [],
   submitted: false
 }
 
-const addFoodItem = (state: State): State => ({
+const addFoodPortion = (foodItem: FoodItem) => (state: State): State => ({
   ...state,
-  foodItems: state.foodItems.concat(defaultFoodItem()),
+  foodPortions: state.foodPortions.concat({ id: foodItem.id, portions: 1 }),
 });
 
-const updateFoodItem = (index: number, value: Partial<FoodItem>) => (state: State): State => ({
+const updateFoodPortion = (index: number, value: Partial<FoodItem>) => (state: State): State => ({
   ...state,
-  foodItems: [
-    ...state.foodItems.slice(0, index),
-    { ...state.foodItems[index], ...value },
-    ...state.foodItems.slice(index + 1),
+  foodPortions: [
+    ...state.foodPortions.slice(0, index),
+    { ...state.foodPortions[index], ...value },
+    ...state.foodPortions.slice(index + 1),
   ],
 });
 
 const removeFoodItem = (index: number) => (state: State): State => ({
   ...state,
-  foodItems: state.foodItems.length > 1
-    ? [...state.foodItems.slice(0, index), ...state.foodItems.slice(index + 1)]
-    : [defaultFoodItem()],
+  foodPortions: [...state.foodPortions.slice(0, index), ...state.foodPortions.slice(index + 1)]
 });
 
-const renderFoodItemInput = (handleChange: OnChangeFn, handleRemove: OnRemoveFn, submitted: boolean) =>
-  (value: FoodItem, index: number) =>
-    <FoodItemInput
-      index={index}
-      submitted={submitted}
-      value={value}
-      onChange={handleChange}
-      onRemove={handleRemove}
-      key={index}
-    />
-
-const foodItemIsValid = (foodItem: FoodItem): boolean =>
-  Boolean(foodItem.name && foodItem.calories >= 0 && foodItem.portion >= 0);
+const foodPortionIsValid = (foodPortion: FoodPortion): boolean =>
+  Boolean(foodPortion.id && foodPortion.portions > 0);
 
 export const CreateMealForm: React.FC<Props> = ({ onValidSubmit }) => {
-  const [{ foodItems, submitted }, setState] = useState(initialState);
+  const [{ foodPortions, submitted }, setState] = useState(initialState);
+  const { getFoodItem } = useContext(FoodItemContext);
 
   const handleChange: OnChangeFn = (index, value) => {
-    setState(updateFoodItem(index, value))
+    setState(updateFoodPortion(index, value))
   }
   
   const handleReset = () => {
     setState(initialState);
   }
 
-  const handleAddFoodItem = () => {
-    setState(addFoodItem); 
+  const handleAddFoodPortion = (foodItem: FoodItem) => () => {
+    setState(addFoodPortion(foodItem)); 
   }
 
   const handleRemove: OnRemoveFn = (index) => {
@@ -81,20 +65,36 @@ export const CreateMealForm: React.FC<Props> = ({ onValidSubmit }) => {
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (foodItems.every(foodItemIsValid)) {
-      onValidSubmit(foodItems);
+    if (foodPortions.every(foodPortionIsValid)) {
+      onValidSubmit({ foodPortions });
       setState(initialState);
     } else {
       setState(prevState => ({ ...prevState, submitted: true }));
     }
     event.preventDefault();
   }
+
+  const testFoodItem = getFoodItem('1') as FoodItem;
   
   return (
     <form className="CreateMealForm" onSubmit={handleSubmit}>
-      {foodItems.map(renderFoodItemInput(handleChange, handleRemove, submitted))}
+      {foodPortions.map((foodPortion, index) => {
+        const foodItem = getFoodItem(foodPortion.id);
+        return foodItem && (
+          <FoodPortionInput
+            index={index}
+            submitted={submitted}
+            value={foodPortion}
+            foodItem={foodItem}
+            onChange={handleChange}
+            onRemove={handleRemove}
+            key={index}
+          />
+        );
+      })}
+      <h4>Total calories: {calculateTotalCalories(foodPortions, getFoodItem)}</h4>
       <button type="button" onClick={handleReset}>Reset</button>
-      <button type="button" onClick={handleAddFoodItem}>Add Food Item</button>
+      <button type="button" onClick={handleAddFoodPortion(testFoodItem)}>Add Food Item</button>
       <button>Create Meal</button>
     </form>
   );

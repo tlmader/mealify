@@ -4,6 +4,7 @@ import './FoodItemInput.css';
 
 export interface FoodItemInputProps {
   index: number;
+  submitted: boolean;
   value: FoodItemInputValue;
   onChange: (index: number, value: Partial<FoodItemInputValue>) => void;
   onRemove: (index: number) => void;
@@ -18,7 +19,7 @@ const initialState = () => ({
 })
 type State = Readonly<ReturnType<typeof initialState>>;
 
-export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onChange, onRemove }) => {
+export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, submitted, value, onChange, onRemove }) => {
   const [{ touched }, setState] = useState<State>(initialState());
 
   const handleBlur = (key: keyof FoodItemInputValue) => () => {
@@ -54,7 +55,7 @@ export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onCh
               type="text"
               placeholder="Enter name"
             />
-            {touched.name && !value.name && <div className="FoodItemInput__error">Please enter a name</div>}
+            {(submitted || touched.name) && !value.name && <div className="FoodItemInput__error">Please enter a name</div>}
           </div>
         </label>
       </div>
@@ -70,7 +71,7 @@ export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onCh
               min="0"
             />
             calories
-            {touched.calories && typeof value.calories !== 'number' && <div className="FoodItemInput__error">Please enter a number</div>}
+            {(submitted || touched.calories) && typeof value.calories !== 'number' && <div className="FoodItemInput__error">Please enter a number</div>}
           </div>
         </label>
       </div>
@@ -86,7 +87,7 @@ export const FoodItemInput: React.FC<FoodItemInputProps> = ({ index, value, onCh
               min="0"
             />
             grams
-            {touched.portion && typeof value.portion !== 'number' && <div className="FoodItemInput__error">Please enter a number</div>}
+            {(submitted || touched.portion) && typeof value.portion !== 'number' && <div className="FoodItemInput__error">Please enter a number</div>}
           </div>
         </label>
       </div>

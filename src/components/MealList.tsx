@@ -9,7 +9,8 @@ export const MealList: React.FC = () => {
   const { meals } = useContext(MealContext);
   return (
     <div>
+      <h2>My Meals</h2>
       {meals.map(renderMealItem)}
     </div>
   );
-}
+};

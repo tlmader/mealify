@@ -2,15 +2,16 @@ import React, { useContext } from 'react';
 import './App.css';
 import { defaultMeals, MealContext } from './contexts/MealContext';
 import { MealList } from './components/MealList';
+import { MealForm } from './components/CreateMealForm';
 
 const App: React.FC = () => {
-  const { meals } = useContext(MealContext)
   return (
-    <div className="App">
-      <MealContext.Provider value={defaultMeals}>
+    <MealContext.Provider value={defaultMeals}>
+      <div className="App">
         <MealList />
-      </MealContext.Provider>
-    </div>
+        <MealForm />
+      </div>
+    </MealContext.Provider>
   );
 }
 

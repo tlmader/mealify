@@ -18,8 +18,24 @@ export const defaultMeals: { meals: Meal[] } = {
           portion: 10
         }
       ]
-    }
+    },
+    {
+      foodItems: [
+        {
+          id: '3',
+          name: 'Sushi',
+          calories: 250,
+          portion: 10
+        },
+        {
+          id: '4',
+          name: 'Green Tea',
+          calories: 5,
+          portion: 5
+        }
+      ]
+    },
   ]
-}
+};
 
 export const MealContext = React.createContext(defaultMeals)

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { FoodItemContext } from '../contexts/FoodItemContext';
 import { FoodItem } from '../interfaces/FoodItem';
 import { FoodPortion, Meal } from '../interfaces/Meal';
@@ -65,31 +65,46 @@ export const CreateMealForm: React.FC<Props> = ({ onValidSubmit }) => {
   const [{ foodPortions, submitted }, setState] = useState(initialState);
   const { getFoodItem } = useContext(FoodItemContext);
 
-  const handleChange: OnChangeFn = (index, value) => {
-    setState(updateFoodPortion(index, value))
-  }
+  const handleChange: OnChangeFn = useCallback(
+    (index, value) => {
+      setState(updateFoodPortion(index, value))
+    },
+    [setState],
+  );
   
-  const handleReset = () => {
-    setState(initialState);
-  }
-
-  const handleAddFoodItem = (foodItem: FoodItem) => {
-    setState(addFoodPortion(foodItem)); 
-  }
-
-  const handleRemove: OnRemoveFn = (index) => {
-    setState(removeFoodItem(index))
-  }
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (foodPortions.length && foodPortions.every(foodPortionIsValid)) {
-      onValidSubmit({ foodPortions: foodPortions as FoodPortion[] });
+  const handleReset = useCallback(
+    () => {
       setState(initialState);
-    } else {
-      setState(prevState => ({ ...prevState, submitted: true }));
-    }
-    event.preventDefault();
-  }
+    },
+    [setState],
+  );
+  
+  const handleAddFoodItem = useCallback(
+    (foodItem: FoodItem) => {
+      setState(addFoodPortion(foodItem)); 
+    },
+    [setState],
+  );
+  
+  const handleRemove: OnRemoveFn = useCallback(
+    (index) => {
+      setState(removeFoodItem(index))
+    },
+    [setState],
+  );
+
+  const handleSubmit = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      if (foodPortions.length && foodPortions.every(foodPortionIsValid)) {
+        onValidSubmit({ foodPortions: foodPortions as FoodPortion[] });
+        setState(initialState);
+      } else {
+        setState(prevState => ({ ...prevState, submitted: true }));
+      }
+      event.preventDefault();
+    },
+    [foodPortions, onValidSubmit, setState]
+  );
 
   const totalCalories = calculateTotalCalories(inputValuesToFoodPortions(foodPortions), getFoodItem);
   

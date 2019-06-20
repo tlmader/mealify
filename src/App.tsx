@@ -11,7 +11,7 @@ const App: React.FC = () => {
       <MealProvider>
         <div className="App">
           <div>
-            <h1>YumLog</h1>
+            <h1>Mealify</h1>
             <h4>Your trusty meal logger!</h4>
           </div>
           <div className="App__divider" />

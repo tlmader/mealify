@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Meal } from '../interfaces/Meal';
 
 interface State {
@@ -39,9 +39,12 @@ export const MealContext = React.createContext({
 export const MealProvider: React.FC = ({ children }) => {
   const [state, setState] = useState<State>({ meals: defaultMeals() })
 
-  const addMeal = (addedMeal: Meal) => {
-    setState(({ meals }) => ({ meals: [...meals, addedMeal] }));
-  }
+  const addMeal = useCallback(
+    (addedMeal: Meal) => {
+      setState(({ meals }) => ({ meals: [...meals, addedMeal] }));
+    },
+    [setState],
+  );
 
   return (
     <MealContext.Provider

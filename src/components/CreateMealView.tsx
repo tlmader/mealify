@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import { MealContext } from '../contexts/MealContext';
 import { Meal } from '../interfaces/Meal';
 import { CreateMealForm } from './CreateMealForm';
@@ -12,14 +12,20 @@ export const CreateMealView: React.FC = () => {
   const { addMeal } = useContext(MealContext);
   const [{ showForm }, setState] = useState<State>(initialState);
 
-  const handleClick = () => {
-    setState({ showForm: true });
-  };
+  const handleClick = useCallback(
+    () => {
+      setState({ showForm: true });
+    },
+    [setState]
+  );
 
-  const handleValidSubmit = (meal: Meal) => {
-    addMeal(meal);
-    setState(initialState);
-  }
+  const handleValidSubmit = useCallback(
+    (meal: Meal) => {
+      addMeal(meal);
+      setState(initialState);
+    },
+    [addMeal, setState]
+  );
 
   return (
     <div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { calculateCalories } from '../helpers/calculateCalories';
 import { FoodItem } from '../interfaces/FoodItem';
 import './FoodPortionInput.css';
@@ -31,19 +31,28 @@ const renderError = (submitted: boolean, touched: boolean, { portions }: FoodPor
 export const FoodPortionInput: React.FC<FoodPortionInputProps> = ({ index, foodItem, submitted, value, onChange, onRemove }) => {
   const [{ touched }, setState] = useState<State>(initialState());
 
-  const handleBlur = () => {
-    setState({ touched: true });
-  }
+  const handleBlur = useCallback(
+    () => {
+      setState({ touched: true });
+    },
+    [setState],
+  );
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = event.target;
-    onChange(index, { id: foodItem.id, portions: adjustFoodPortionValue(value) });
-  }
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const {value} = event.target;
+      onChange(index, { id: foodItem.id, portions: adjustFoodPortionValue(value) });
+    },
+    [index, foodItem, onChange],
+  );
 
-  const handleRemove = () => {
-    setState(initialState());
-    onRemove(index);
-  }
+  const handleRemove = useCallback(
+    () => {
+      setState(initialState());
+      onRemove(index);
+    },
+    [index, setState, onRemove],
+  );
 
   return (
     <div className="FoodPortionInput">

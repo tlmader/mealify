@@ -28,7 +28,6 @@ const addFoodPortion = (foodItem: FoodItem) => (state: State): State => {
   const { foodPortions } = state;
   const foundIndex = foodPortions.findIndex(foodPortion => foodPortion.id === foodItem.id)
   const foundFoodPortion = foodPortions[foundIndex]
-  console.log(foundIndex, foundFoodPortion);
   // If food item already has been added, increment portion by 1
   return foundIndex === -1
     ? ({
@@ -93,8 +92,6 @@ export const CreateMealForm: React.FC<Props> = ({ onValidSubmit }) => {
   }
 
   const totalCalories = calculateTotalCalories(inputValuesToFoodPortions(foodPortions), getFoodItem);
-
-  console.log('CreateMealForm value', foodPortions)
   
   return (
     <div className="CreateMealForm">

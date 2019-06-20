@@ -33,9 +33,7 @@ export const defaultMeals = (): Meal[] => [
 ];
 
 export const MealContext = React.createContext({
-  addMeal: (addedMeal: Meal) => {
-    console.log(addedMeal);
-  },
+  addMeal: (addedMeal: Meal) => {},
   meals: defaultMeals()
 });
 export const MealProvider: React.FC = ({ children }) => {
@@ -44,8 +42,6 @@ export const MealProvider: React.FC = ({ children }) => {
   const addMeal = (addedMeal: Meal) => {
     setState(({ meals }) => ({ meals: [...meals, addedMeal] }));
   }
-
-  console.log('MealContext', state);
 
   return (
     <MealContext.Provider

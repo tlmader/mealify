@@ -37,7 +37,6 @@ export const FoodPortionInput: React.FC<FoodPortionInputProps> = ({ index, foodI
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = event.target;
-    console.log(value);
     onChange(index, { id: foodItem.id, portions: adjustFoodPortionValue(value) });
   }
 

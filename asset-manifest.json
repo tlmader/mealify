@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/mealify/static/css/main.b2757f96.chunk.css",
+    "main.js": "/mealify/static/js/main.bb1574a4.chunk.js",
+    "main.js.map": "/mealify/static/js/main.bb1574a4.chunk.js.map",
+    "runtime~main.js": "/mealify/static/js/runtime~main.bb44c324.js",
+    "runtime~main.js.map": "/mealify/static/js/runtime~main.bb44c324.js.map",
+    "static/js/2.87fef826.chunk.js": "/mealify/static/js/2.87fef826.chunk.js",
+    "static/js/2.87fef826.chunk.js.map": "/mealify/static/js/2.87fef826.chunk.js.map",
+    "index.html": "/mealify/index.html",
+    "precache-manifest.ee8a3c26122c1e4d261cb50e04ba797b.js": "/mealify/precache-manifest.ee8a3c26122c1e4d261cb50e04ba797b.js",
+    "service-worker.js": "/mealify/service-worker.js",
+    "static/css/main.b2757f96.chunk.css.map": "/mealify/static/css/main.b2757f96.chunk.css.map"
+  }
+}
